@@ -58,8 +58,20 @@ dotnet publish src/Clipdrop.csproj -c Release -r win-x64 --self-contained true -
 |---|---|---|
 | `Program.cs` | Startup, single instance, tray icon and menu | `main.swift`, `AppDelegate.swift` (menu bar) |
 | `LineWindow.cs` | The transparent strip, revealing and tucking away, hotkey, clipboard, full screen | `AppDelegate.swift`, `LinePanel.swift`, `LineView.swift`, `HotKey.swift`, `FullScreen.swift` |
+| `CaptureFlight.cs` | Finds where a capture was taken and flies it up to the line | `CaptureFlight.swift` |
 | `CardView.cs` | One photo: glass frame, clip, swing and breeze; click, hold, drag | `PeggedView.swift`, `GrabArea.swift` |
 | `Line.cs` | What is hanging, and what you can do with it | `Line.swift` |
 | `ScreenshotWatcher.cs` | Notices new screenshots | `ScreenshotWatcher.swift` |
 | `Settings.cs` | Preferences and open at sign-in | `UserDefaults`, `SMAppService` |
 | `Native.cs` | Win32 calls | |
+
+## Differences from the macOS app
+
+- No menu bar on Windows, so the line comes down when the pointer rests against the very top edge. A click near the top (a browser tab, a title bar) puts it away until the pointer moves off.
+- Markup opens in Paint instead of the macOS Markup sheet; the photo refreshes after you save.
+- Windows doesn't record where a screenshot was taken, so Clipdrop works it out: it tries the whole monitor, the window under the pointer, and a rectangle ending where you let go of the mouse, and keeps the one whose pixels match. The capture then lifts off and flies up to the line like on macOS. With no match it just drops on. Turn it off with *Fly up from where you snipped* in the tray menu.
+- Clipdrop doesn't change Windows' screenshot settings. The Snipping Tool keeps saving where it always does.
+
+## License
+
+MIT, see [LICENSE](LICENSE). Original code © Alejandro Buján.
