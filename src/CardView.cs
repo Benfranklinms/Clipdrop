@@ -7,7 +7,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
 
-namespace Washline
+namespace Clipdrop
 {
     internal static class Layout
     {
