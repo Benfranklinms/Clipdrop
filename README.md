@@ -1,4 +1,4 @@
-# Washline
+# Clipdrop
 
 **Screenshots, hung out to dry, on Windows.** Every screenshot you take hangs on a line just above the top of your screen. Rest the pointer against the top edge and it glides down. Move away and it tucks back up.
 
@@ -21,18 +21,18 @@ A Windows port of [Tendedero](https://github.com/alejandrobujan/tendedero) by Al
 
 ## What it picks up
 
-- **Win + PrtScn** and the **Snipping Tool** (Win + Shift + S on Windows 11, which auto-saves): both land in your Screenshots folder, which Washline watches.
-- **Plain PrtScn / Alt + PrtScn** only copy to the clipboard. Turn on *Also catch screenshots copied to the clipboard* in the tray menu and those hang too, saved to `%LocalAppData%\Washline\Captures`. Taking one of those down sends it to the Recycle Bin, so that folder never fills up.
+- **Win + PrtScn** and the **Snipping Tool** (Win + Shift + S on Windows 11, which auto-saves): both land in your Screenshots folder, which Clipdrop watches.
+- **Plain PrtScn / Alt + PrtScn** only copy to the clipboard. Turn on *Also catch screenshots copied to the clipboard* in the tray menu and those hang too, saved to `%LocalAppData%\Clipdrop\Captures`. Taking one of those down sends it to the Recycle Bin, so that folder never fills up.
 
-Washline never takes screenshots itself. Keep your usual shortcuts.
+Clipdrop never takes screenshots itself. Keep your usual shortcuts.
 
 ## Private by design
 
-No account. No network. No analytics. Settings live in `%AppData%\Washline\settings.json`.
+No account. No network. No analytics. Settings live in `%AppData%\Clipdrop\settings.json`.
 
 ## Install
 
-Download `Washline.exe` from the latest release (or the latest **Build** run under Actions) and run it. It's a single self-contained file, no .NET install needed. It lives in the notification area; tick *Open at sign-in* in its menu to start it with Windows.
+Download `Clipdrop.exe` from the latest release (or the latest **Build** run under Actions) and run it. It's a single self-contained file, no .NET install needed. It lives in the notification area; tick *Open at sign-in* in its menu to start it with Windows.
 
 Windows SmartScreen may warn the first time because the exe isn't code-signed. Click *More info* → *Run anyway*.
 
@@ -42,14 +42,14 @@ Requires the .NET 8 SDK.
 
 ```
 git clone <this repo>
-cd washline
+cd clipdrop
 dotnet run --project src
 ```
 
 Single-file release build:
 
 ```
-dotnet publish src/Washline.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -o dist
+dotnet publish src/Clipdrop.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -o dist
 ```
 
 ## Inside the app
@@ -69,7 +69,7 @@ dotnet publish src/Washline.csproj -c Release -r win-x64 --self-contained true -
 - No menu bar on Windows, so the line comes down when the pointer rests against the very top edge. A click near the top (a browser tab, a title bar) puts it away until the pointer moves off.
 - Markup opens in Paint instead of the macOS Markup sheet; the photo refreshes after you save.
 - The capture doesn't fly in from where it was taken; it drops onto the line.
-- Washline doesn't change Windows' screenshot settings. The Snipping Tool keeps saving where it always does.
+- Clipdrop doesn't change Windows' screenshot settings. The Snipping Tool keeps saving where it always does.
 
 ## License
 
