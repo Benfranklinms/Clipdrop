@@ -4,6 +4,10 @@
 
 A Windows port of [Tendedero](https://github.com/alejandrobujan/tendedero) by Alejandro Buján, rewritten in C# and WPF. Not affiliated with or endorsed by the original author. The Tendedero name and icon are not used here, per its license.
 
+![Clipdrop demo](docs/clipdrop-demo.gif)
+
+*Animated mock-up of the behaviour, rendered with `tools/render-demo.py` ([MP4](docs/clipdrop-demo.mp4)). Not a screen recording.*
+
 ## A gesture for everything
 
 | Gesture | What it does |
