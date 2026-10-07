@@ -12,6 +12,8 @@ namespace Clipdrop
         public bool SoundOn { get; set; } = true;
         /// Also hang images copied to the clipboard (plain PrtScn, Alt+PrtScn).
         public bool CatchClipboard { get; set; } = false;
+        /// New screenshots fly up to the line from where they were taken.
+        public bool FlyIn { get; set; } = true;
         public bool Welcomed { get; set; } = false;
         public List<string> Pegged { get; set; } = new List<string>();
 
