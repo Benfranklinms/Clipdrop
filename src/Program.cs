@@ -6,14 +6,14 @@ using System.Threading;
 using System.Windows;
 using WinForms = System.Windows.Forms;
 
-namespace Washline
+namespace Clipdrop
 {
     public static class Program
     {
         [STAThread]
         public static void Main()
         {
-            using var single = new Mutex(true, "Washline.SingleInstance", out bool first);
+            using var single = new Mutex(true, "Clipdrop.SingleInstance", out bool first);
             if (!first) return;
 
             var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
@@ -41,7 +41,7 @@ namespace Washline
             icon = new WinForms.NotifyIcon
             {
                 Icon = DrawIcon(),
-                Text = "Washline: rest the pointer at the top edge (Ctrl+Alt+T)",
+                Text = "Clipdrop: rest the pointer at the top edge (Ctrl+Alt+T)",
                 Visible = true,
                 ContextMenuStrip = new WinForms.ContextMenuStrip(),
             };
@@ -50,7 +50,7 @@ namespace Washline
             Fill();
 
             if (!window.Settings.Welcomed)
-                icon.ShowBalloonTip(6000, "Washline is running",
+                icon.ShowBalloonTip(6000, "Clipdrop is running",
                     "Every screenshot now hangs on a line at the top of your screen. Rest the pointer against the top edge to bring it down, or press Ctrl+Alt+T.",
                     WinForms.ToolTipIcon.None);
         }
@@ -89,7 +89,7 @@ namespace Washline
             })
             { Checked = SafeLaunchAtLogin() });
             m.Items.Add(new WinForms.ToolStripSeparator());
-            m.Items.Add(new WinForms.ToolStripMenuItem("Quit Washline", null, (s, e) =>
+            m.Items.Add(new WinForms.ToolStripMenuItem("Quit Clipdrop", null, (s, e) =>
             {
                 icon.Visible = false;
                 app.Shutdown();
