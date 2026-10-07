@@ -4,9 +4,9 @@ using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
 
-namespace Washline
+namespace Clipdrop
 {
-    /// Everything Washline remembers, kept as JSON in %AppData%\Washline.
+    /// Everything Clipdrop remembers, kept as JSON in %AppData%\Clipdrop.
     public sealed class Settings
     {
         public bool SoundOn { get; set; } = true;
@@ -16,13 +16,13 @@ namespace Washline
         public List<string> Pegged { get; set; } = new List<string>();
 
         public static string AppDataDir =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Washline");
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Clipdrop");
 
-        /// Washline's own folder, for images caught from the clipboard. Files
+        /// Clipdrop's own folder, for images caught from the clipboard. Files
         /// here are discarded to the Recycle Bin when taken down, so it never
         /// fills up with forgotten captures.
         public static string InboxDir =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Washline", "Captures");
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Clipdrop", "Captures");
 
         private static string FilePath => Path.Combine(AppDataDir, "settings.json");
 
@@ -54,13 +54,13 @@ namespace Washline
             get
             {
                 using var key = Registry.CurrentUser.OpenSubKey(RunKey);
-                return key?.GetValue("Washline") != null;
+                return key?.GetValue("Clipdrop") != null;
             }
             set
             {
                 using var key = Registry.CurrentUser.CreateSubKey(RunKey);
-                if (value) key.SetValue("Washline", "\"" + Environment.ProcessPath + "\"");
-                else key.DeleteValue("Washline", false);
+                if (value) key.SetValue("Clipdrop", "\"" + Environment.ProcessPath + "\"");
+                else key.DeleteValue("Clipdrop", false);
             }
         }
     }
