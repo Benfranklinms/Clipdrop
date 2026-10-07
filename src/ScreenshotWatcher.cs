@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Threading;
 
-namespace Washline
+namespace Clipdrop
 {
     /// Watches the folder Windows saves screenshots to (Win+PrtScn, and the
-    /// Snipping Tool's auto-save) and reports new ones. Washline never takes
+    /// Snipping Tool's auto-save) and reports new ones. Clipdrop never takes
     /// screenshots itself: you keep your usual shortcut and the line picks
     /// them up.
     public sealed class ScreenshotWatcher : IDisposable
