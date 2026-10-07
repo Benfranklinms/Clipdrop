@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Washline
+namespace Clipdrop
 {
     /// Win32 calls the line needs: placement, click-through, the hotkey,
     /// the clipboard listener and full screen detection.
