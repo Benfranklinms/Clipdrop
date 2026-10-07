@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using WinForms = System.Windows.Forms;
 
-namespace Washline
+namespace Clipdrop
 {
     /// The transparent strip along the top of a screen. It hangs above the
     /// top edge, tucked away, and slides down when the pointer rests against
@@ -62,7 +62,7 @@ namespace Washline
         public LineWindow(Settings settings)
         {
             Settings = settings;
-            Title = "Washline";
+            Title = "Clipdrop";
             WindowStyle = WindowStyle.None;
             AllowsTransparency = true;
             Background = Brushes.Transparent;
@@ -138,7 +138,7 @@ namespace Washline
             source.AddHook(WndProc);
 
             if (!Native.RegisterHotKey(hwnd, HotKeyId, Native.MOD_CONTROL | Native.MOD_ALT | Native.MOD_NOREPEAT, 0x54 /* T */))
-                System.Diagnostics.Debug.WriteLine("Washline: Ctrl+Alt+T is taken by another app.");
+                System.Diagnostics.Debug.WriteLine("Clipdrop: Ctrl+Alt+T is taken by another app.");
             Native.AddClipboardFormatListener(hwnd);
 
             Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (s, e) =>
