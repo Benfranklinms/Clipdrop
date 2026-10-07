@@ -50,6 +50,15 @@ namespace Clipdrop
         private Pegged lastClipboardItem;
         private DateTime lastFolderCapture = DateTime.MinValue;
 
+        /// Where each new capture was taken, so it can fly up from there.
+        private readonly Dictionary<string, System.Drawing.Rectangle> pendingFlights = new Dictionary<string, System.Drawing.Rectangle>(StringComparer.OrdinalIgnoreCase);
+        /// Where the left mouse button was last let go: the end corner of a
+        /// rectangle snip, or a point inside a window snip.
+        private readonly DispatcherTimer pointerTimer;
+        private bool leftWasDown;
+        private Native.POINT lastMouseUp;
+        private DateTime lastMouseUpAt = DateTime.MinValue;
+
         private const int HotKeyId = 0x5754;
         private static readonly TimeSpan RevealDelay = TimeSpan.FromSeconds(0.3);
         private static readonly TimeSpan RetractDelay = TimeSpan.FromSeconds(0.5);
@@ -130,6 +139,19 @@ namespace Clipdrop
 
             mouseTimer = new DispatcherTimer(DispatcherPriority.Input) { Interval = TimeSpan.FromMilliseconds(33) };
             mouseTimer.Tick += (s, e) => Tick();
+
+            pointerTimer = new DispatcherTimer(DispatcherPriority.Input) { Interval = TimeSpan.FromMilliseconds(30) };
+            pointerTimer.Tick += (s, e) =>
+            {
+                bool down = (Native.GetAsyncKeyState(0x01) & 0x8000) != 0;
+                if (leftWasDown && !down && Native.GetCursorPos(out var up))
+                {
+                    lastMouseUp = up;
+                    lastMouseUpAt = DateTime.Now;
+                }
+                leftWasDown = down;
+            };
+            pointerTimer.Start();
 
             hwnd = new WindowInteropHelper(this).EnsureHandle();
             int ex = Native.GetWindowLong(hwnd, Native.GWL_EXSTYLE);
@@ -228,8 +250,21 @@ namespace Clipdrop
 
         private Pegged Hang(string path, bool quietly = false)
         {
-            // The line goes to the screen you were working on.
+            // The line goes to the screen you were working on, and the
+            // capture flies up from where it was taken when we can tell.
             var screen = ScreenUnderPointer();
+            if (!quietly && Settings.FlyIn)
+            {
+                var anchors = new List<Native.POINT>();
+                if (DateTime.Now - lastMouseUpAt < TimeSpan.FromSeconds(8)) anchors.Add(lastMouseUp);
+                if (Native.GetCursorPos(out var now)) anchors.Add(now);
+                var from = CaptureLocator.Find(path, anchors);
+                if (from != null)
+                {
+                    pendingFlights[path] = from.Value;
+                    screen = WinForms.Screen.FromRectangle(from.Value);
+                }
+            }
             if (!isRevealed && screen.DeviceName != currentScreen?.DeviceName) PlaceOnScreen(screen);
             return Line.Hang(path, quietly);
         }
@@ -247,8 +282,39 @@ namespace Clipdrop
 
         private void OnHung(Pegged item)
         {
+            if (pendingFlights.TryGetValue(item.Path, out var from))
+            {
+                pendingFlights.Remove(item.Path);
+                AddCard(item, arrive: false);
+                var card = cards[item.Id];
+                card.Opacity = 0;
+                LayoutCards(animated: true);
+                // Let the line come down and lay out before measuring the landing spot.
+                Line.After(0.06, () => FlyIn(card, from));
+                return;
+            }
             AddCard(item, arrive: true);
             LayoutCards(animated: true);
+        }
+
+        private void FlyIn(CardView card, System.Drawing.Rectangle from)
+        {
+            var rect = isRevealed && !card.Item.Falling ? card.CardRect(stage) : null;
+            if (rect == null || source?.CompositionTarget == null) { card.Arrive(); return; }
+            double scale = source.CompositionTarget.TransformToDevice.M11;
+            Point origin;
+            try { origin = PointToScreen(new Point(0, 0)); } catch { card.Arrive(); return; }
+            var r = rect.Value;
+            var to = new System.Drawing.Rectangle(
+                (int)Math.Round(origin.X + r.Left * scale), (int)Math.Round(origin.Y + r.Top * scale),
+                (int)Math.Round(r.Width * scale), (int)Math.Round(r.Height * scale));
+            CaptureFlight.Fly(card.Item.Path, from, to, card.Item.Tilt, () =>
+            {
+                if (card.Item.Falling) return;
+                card.BeginAnimation(OpacityProperty, null);
+                card.Opacity = 1;
+                card.Nudge(2.5);
+            });
         }
 
         private void OnFell(Pegged item)
