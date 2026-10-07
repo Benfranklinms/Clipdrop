@@ -72,6 +72,12 @@ namespace Clipdrop
                 settings.Save();
             })
             { Checked = settings.CatchClipboard, ToolTipText = "Plain PrtScn and Alt+PrtScn copy without saving. With this on, they hang too." });
+            m.Items.Add(new WinForms.ToolStripMenuItem("Fly up from where you snipped", null, (s, e) =>
+            {
+                settings.FlyIn = !settings.FlyIn;
+                settings.Save();
+            })
+            { Checked = settings.FlyIn });
             m.Items.Add(new WinForms.ToolStripMenuItem("Open screenshots folder", null, (s, e) =>
             {
                 try { Process.Start("explorer.exe", "\"" + window.Watcher.Folder + "\""); } catch { }
