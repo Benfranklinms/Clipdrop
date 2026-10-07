@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.VisualBasic.FileIO;
 
-namespace Washline
+namespace Clipdrop
 {
     /// One screenshot hanging on the line.
     public sealed class Pegged
@@ -62,7 +62,7 @@ namespace Washline
         public int LiveCount => Items.Count(i => !i.Falling);
         public IEnumerable<Pegged> Live => Items.Where(i => !i.Falling);
 
-        /// Set while Washline itself writes to the clipboard, so the clipboard
+        /// Set while Clipdrop itself writes to the clipboard, so the clipboard
         /// listener does not hang our own copy again.
         public bool SuppressClipboard { get; private set; }
 
@@ -212,7 +212,7 @@ namespace Washline
             catch { SystemSounds.Beep.Play(); }
         }
 
-        /// Whether the file lives in Washline's own folder. Those are discarded
+        /// Whether the file lives in Clipdrop's own folder. Those are discarded
         /// to the Recycle Bin; files anywhere else stay where they are.
         public bool IsInInbox(Guid id)
         {
