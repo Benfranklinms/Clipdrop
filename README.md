@@ -63,14 +63,3 @@ dotnet publish src/Clipdrop.csproj -c Release -r win-x64 --self-contained true -
 | `ScreenshotWatcher.cs` | Notices new screenshots | `ScreenshotWatcher.swift` |
 | `Settings.cs` | Preferences and open at sign-in | `UserDefaults`, `SMAppService` |
 | `Native.cs` | Win32 calls | |
-
-## Differences from the macOS app
-
-- No menu bar on Windows, so the line comes down when the pointer rests against the very top edge. A click near the top (a browser tab, a title bar) puts it away until the pointer moves off.
-- Markup opens in Paint instead of the macOS Markup sheet; the photo refreshes after you save.
-- The capture doesn't fly in from where it was taken; it drops onto the line.
-- Clipdrop doesn't change Windows' screenshot settings. The Snipping Tool keeps saving where it always does.
-
-## License
-
-MIT, see [LICENSE](LICENSE). Original code © Alejandro Buján.
